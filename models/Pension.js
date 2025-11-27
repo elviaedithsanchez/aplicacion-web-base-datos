@@ -68,6 +68,7 @@ const Pension = sequelize.define(
   },
   {
     tableName: 'pensions',
+    freezeTableName: true,
     timestamps: true,
     underscored: true,
     createdAt: 'created_at',
