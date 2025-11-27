@@ -1,0 +1,82 @@
+<%- include('partials/header') %> <% if (typeof error !== 'undefined' && error)
+{ %>
+<div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<h2>Registros de Pensiones</h2>
+
+<div class="mb-20">
+  <a href="/pensiones/nuevo" class="btn btn-success">+ Nueva Pensión</a>
+  <a href="/" class="btn btn-secondary">← Volver al Inicio</a>
+</div>
+
+<% if (pensiones && pensiones.length > 0) { %>
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Años de Servicio</th>
+        <th>Salario Mensual</th>
+        <th>Pensión Calculada</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% pensiones.forEach(pension => { %>
+      <tr>
+        <td><%= pension.id %></td>
+        <td><%= pension.nombre %></td>
+        <td><%= pension.anios_servicio %> años</td>
+        <td>
+          $<%= parseFloat(pension.salario_mensual).toLocaleString('es-MX',
+          {minimumFractionDigits: 2, maximumFractionDigits: 2}) %>
+        </td>
+        <td>
+          <strong
+            >$<%= parseFloat(pension.pension_calculada).toLocaleString('es-MX',
+            {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></strong
+          >
+        </td>
+        <td><%= new Date(pension.created_at).toLocaleDateString('es-MX') %></td>
+        <td class="action-buttons">
+          <a
+            href="/pensiones/<%= pension.id %>"
+            class="btn btn-primary"
+            title="Ver detalle"
+            >Ver</a
+          >
+          <a
+            href="/pensiones/<%= pension.id %>/editar"
+            class="btn btn-warning"
+            title="Editar"
+            >Editar</a
+          >
+          <form
+            method="POST"
+            action="/pensiones/<%= pension.id %>?_method=DELETE"
+            style="display: inline"
+            onsubmit="return confirm('¿Estás seguro de eliminar este registro?');"
+          >
+            <button type="submit" class="btn btn-danger" title="Eliminar">
+              Eliminar
+            </button>
+          </form>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<% } else { %>
+<div class="no-data">
+  <p>No hay registros de pensiones aún.</p>
+  <p>
+    <a href="/pensiones/nuevo" class="btn btn-success"
+      >Crear la primera pensión</a
+    >
+  </p>
+</div>
+<% } %> <%- include('partials/footer') %>

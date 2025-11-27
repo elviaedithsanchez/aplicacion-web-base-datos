@@ -1,0 +1,24 @@
+<%- include('partials/header') %> <% if (typeof error !== 'undefined' && error)
+{ %>
+<div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<h2>Cálculo de tu Propuesta de Pensión</h2>
+<p>
+  Conoce cómo calcular tu pensión futura. Mira este video explicativo sobre el
+  cálculo de pensiones.
+</p>
+<div class="video-container">
+  <iframe
+    src="https://www.youtube.com/embed/FvAikc-GXl0"
+    title="Video explicativo sobre cálculo de pensión"
+    allowfullscreen
+  ></iframe>
+</div>
+
+<div class="mt-20">
+  <a href="/pensiones" class="btn btn-primary">Ver Registros de Pensiones</a>
+  <a href="/pensiones/nuevo" class="btn btn-success">Calcular Nueva Pensión</a>
+</div>
+
+<%- include('partials/footer') %>

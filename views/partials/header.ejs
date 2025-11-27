@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      <%= typeof pageTitle !== 'undefined' ? pageTitle + ' - ' : '' %>Cálculo de
+      Pensión
+    </title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+  <body>
+    <div class="site-container">
+      <header class="site-header">
+        <div class="header-logo">
+          <img
+            src="/img/logo.png"
+            alt="Logo"
+          />
+        </div>
+        <nav class="header-nav">
+          <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>"
+            >Inicio</a
+          >
+          <a
+            href="/pensiones"
+            class="<%= currentPath.startsWith('/pensiones') && currentPath !== '/pensiones/nuevo' ? 'active' : '' %>"
+            >Pensiones</a
+          >
+          <a
+            href="/pensiones/nuevo"
+            class="<%= currentPath === '/pensiones/nuevo' ? 'active' : '' %>"
+            >Nueva</a
+          >
+        </nav>
+      </header>
+
+      <main class="site-body">

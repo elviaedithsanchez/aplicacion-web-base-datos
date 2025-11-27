@@ -1,0 +1,151 @@
+<%- include('partials/header') %> <% if (typeof error !== 'undefined' && error)
+{ %>
+<div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<h2><%= title || 'Pensión' %></h2>
+
+<div
+  class="form-container"
+  x-data="{
+       salario: <%= pension ? pension.salario_mensual : 0 %>,
+       anios: <%= pension ? pension.anios_servicio : 0 %>,
+       get pensionCalculada() {
+         return (parseFloat(this.salario) * parseInt(this.anios)).toFixed(2);
+       },
+       formatCurrency(value) {
+         return parseFloat(value).toLocaleString('es-MX', {
+           style: 'currency',
+           currency: 'MXN'
+         });
+       }
+     }"
+>
+  <% if (typeof readonly !== 'undefined' && readonly) { %>
+  <div class="form-group">
+    <label>ID:</label>
+    <input type="text" value="<%= pension.id %>" readonly />
+  </div>
+
+  <div class="form-group">
+    <label>Nombre:</label>
+    <input type="text" value="<%= pension.nombre %>" readonly />
+  </div>
+
+  <div class="form-group">
+    <label>Años de Servicio:</label>
+    <input type="text" value="<%= pension.anios_servicio %>" readonly />
+  </div>
+
+  <div class="form-group">
+    <label>Salario Mensual:</label>
+    <input
+      type="text"
+      value="$<%= parseFloat(pension.salario_mensual).toLocaleString('es-MX', {minimumFractionDigits: 2}) %>"
+      readonly
+    />
+  </div>
+
+  <div class="form-group">
+    <label>Pensión Calculada:</label>
+    <input
+      type="text"
+      value="$<%= parseFloat(pension.pension_calculada).toLocaleString('es-MX', {minimumFractionDigits: 2}) %>"
+      readonly
+    />
+  </div>
+
+  <div class="form-group">
+    <label>Fecha de Creación:</label>
+    <input
+      type="text"
+      value="<%= new Date(pension.created_at).toLocaleString('es-MX') %>"
+      readonly
+    />
+  </div>
+
+  <div class="form-group">
+    <label>Última Actualización:</label>
+    <input
+      type="text"
+      value="<%= new Date(pension.updated_at).toLocaleString('es-MX') %>"
+      readonly
+    />
+  </div>
+
+  <div class="form-actions">
+    <a href="/pensiones/<%= pension.id %>/editar" class="btn btn-warning"
+      >Editar</a
+    >
+    <a href="/pensiones" class="btn btn-secondary">Volver a la Lista</a>
+  </div>
+
+  <% } else { %>
+
+  <form method="<%= method || 'POST' %>" action="<%= action %>">
+    <div class="form-group">
+      <label for="nombre">Nombre Completo: *</label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        value="<%= pension ? pension.nombre : '' %>"
+        required
+        minlength="3"
+        maxlength="255"
+        placeholder="Ej: Juan Pérez García"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="anios_servicio">Años de Servicio: *</label>
+      <input
+        type="number"
+        id="anios_servicio"
+        name="anios_servicio"
+        x-model.number="anios"
+        min="1"
+        max="50"
+        required
+        placeholder="Ej: 25"
+      />
+      <small style="color: #666">Ingrese un valor entre 1 y 50 años</small>
+    </div>
+
+    <div class="form-group">
+      <label for="salario_mensual">Salario Mensual: *</label>
+      <input
+        type="number"
+        id="salario_mensual"
+        name="salario_mensual"
+        x-model.number="salario"
+        step="0.01"
+        min="0.01"
+        required
+        placeholder="Ej: 15000.00"
+      />
+      <small style="color: #666">Ingrese el salario mensual en pesos</small>
+    </div>
+
+    <div class="calculated-value" x-show="salario > 0 && anios > 0">
+      <label>Pensión Calculada (Vista Previa):</label>
+      <p style="font-size: 1.5rem; margin: 10px 0">
+        <strong x-text="formatCurrency(pensionCalculada)">$0.00</strong>
+      </p>
+      <small style="color: #666">
+        Fórmula: Salario Mensual × Años de Servicio
+      </small>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success">
+        <%= pension ? 'Actualizar' : 'Guardar' %>
+      </button>
+      <a href="/pensiones" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>
